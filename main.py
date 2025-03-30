@@ -27,9 +27,8 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_is_down = True
-                new_pos = pygame.mouse.get_pos()
-                draw(screen, old_pos, new_pos) # draw just 1 point
-                old_pos = new_pos
+                old_pos = pygame.mouse.get_pos()
+                draw(screen, None, old_pos) # draw just 1 point
             if event.type == pygame.MOUSEBUTTONUP:
                 mouse_is_down = False
                 old_pos = None
