@@ -1,19 +1,24 @@
 import pygame
 
+def draw(surface: pygame.Surface, p1: tuple[int,int], p2: tuple[int,int]):
+    if p1 is None: #if  we can't draw a line, draw 1 point
+        pygame.draw.rect(surface, pygame.Color('black'), (p2[0], p2[1], 1, 1))
+    else:
+        pygame.draw.aaline(surface, pygame.Color('black'), p1, p2)
+
 def main():
     pygame.init()
-    screen_x = 1280
-    screen_y = 720
+    screen_x, screen_y = 1280 , 720
     screen = pygame.display.set_mode((screen_x, screen_y))
+    screen.fill(pygame.Color('white'))
+    
     clock = pygame.time.Clock()
     running = True
     
     mouse_is_down = False
+    old_pos = None
 
-    screen.fill((255,255,255))
     while running:
-        # poll for events
-        # pygame.QUIT event means the user clicked X to close your window
         for event in pygame.event.get():
             print(event)
 
@@ -21,14 +26,15 @@ def main():
                 mouse_is_down = True
             if event.type == pygame.MOUSEBUTTONUP:
                 mouse_is_down = False
+                old_pos = None
             if event.type == pygame.MOUSEMOTION:
                 if mouse_is_down:
-                    pos = pygame.mouse.get_pos()
-                    pygame.draw.rect(screen, (0,0,8), (pos[0], pos[1], 10, 10))
+                    new_pos = pygame.mouse.get_pos()
+                    draw(screen, old_pos, new_pos)
+                    old_pos = new_pos
             if event.type == pygame.QUIT:
                 running = False
 
-        
         pygame.display.flip()
         clock.tick(60)  # limits FPS to 60
 
