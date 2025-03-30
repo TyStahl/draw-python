@@ -5,6 +5,9 @@ def draw(surface: pygame.Surface, p1: tuple[int,int], p2: tuple[int,int]):
         pygame.draw.rect(surface, pygame.Color('black'), (p2[0], p2[1], 1, 1))
     else:
         pygame.draw.aaline(surface, pygame.Color('black'), p1, p2)
+        # For our purposes it might make more sense to draw jagged lines because it 
+        # will be easier to match the line to the discrete points/bins of the plot
+        # pygame.draw.line(surface, pygame.Color('black'), p1, p2)
 
 def main():
     pygame.init()
@@ -24,6 +27,9 @@ def main():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_is_down = True
+                new_pos = pygame.mouse.get_pos()
+                draw(screen, old_pos, new_pos) # draw just 1 point
+                old_pos = new_pos
             if event.type == pygame.MOUSEBUTTONUP:
                 mouse_is_down = False
                 old_pos = None
@@ -35,7 +41,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        pygame.display.flip()
+        pygame.display.flip() # render
         clock.tick(60)  # limits FPS to 60
 
     pygame.quit()
